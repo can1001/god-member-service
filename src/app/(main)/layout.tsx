@@ -40,7 +40,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               <div className="flex items-center space-x-3">
                 <div className="text-sm hidden sm:block">
                   <div className="font-medium text-gray-900">관리자</div>
-                  <div className="text-gray-500">admin@sbu.or.kr</div>
+                  <div className="text-gray-500">admin@god.or.kr</div>
                 </div>
                 <button className="rounded-full p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100">
                   <User className="h-5 w-5" />

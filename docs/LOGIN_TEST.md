@@ -16,8 +16,8 @@
 | 항목        | 값                             |
 | ----------- | ------------------------------ |
 | URL         | `/login?admin=true`            |
-| 이메일      | `admin@sbu.or.kr`              |
-| 비밀번호    | `su2024admin`                  |
+| 이메일      | `admin@god.or.kr`              |
+| 비밀번호    | `god2026admin`                 |
 | 이동 페이지 | `/dashboard` (관리자 대시보드) |
 
 ---
@@ -55,8 +55,8 @@
 
 ```
 JWT_SECRET=<64자 이상 랜덤 문자열>
-ADMIN_EMAILS=admin@sbu.or.kr
-ADMIN_PASSWORD=su2024admin
+ADMIN_EMAILS=admin@god.or.kr
+ADMIN_PASSWORD=god2026admin
 ```
 
 ### JWT_SECRET 생성 방법

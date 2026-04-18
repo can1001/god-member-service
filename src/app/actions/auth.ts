@@ -121,7 +121,7 @@ type AdminLoginResult =
 export async function adminLogin(email: string, password: string): Promise<AdminLoginResult> {
   try {
     // 관리자 이메일 확인 (환경변수로 관리)
-    const adminEmails = (process.env.ADMIN_EMAILS || 'admin@sbu.or.kr').split(',')
+    const adminEmails = (process.env.ADMIN_EMAILS || 'admin@god.or.kr').split(',')
 
     if (!adminEmails.includes(email.toLowerCase().trim())) {
       return { success: false, error: '관리자 권한이 없습니다.' }
