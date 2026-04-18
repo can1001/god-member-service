@@ -1,0 +1,55 @@
+{
+  "name": "하나님나라연구소 회원관리시스템",
+  "short_name": "하나님나라연구소",
+  "description": "하나님나라연구소 회원·회비·후원금 통합 관리 시스템",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#1f2937",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ko",
+  "categories": ["productivity", "business", "finance"],
+  "icons": [
+    {
+      "src": "/next.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "대시보드",
+      "short_name": "대시보드",
+      "description": "메인 대시보드로 이동",
+      "url": "/dashboard",
+      "icons": [{ "src": "/next.svg", "sizes": "any" }]
+    },
+    {
+      "name": "회원 관리",
+      "short_name": "회원",
+      "description": "회원 목록 및 관리",
+      "url": "/members",
+      "icons": [{ "src": "/next.svg", "sizes": "any" }]
+    },
+    {
+      "name": "회비 관리",
+      "short_name": "회비",
+      "description": "회비 납부 및 관리",
+      "url": "/fees",
+      "icons": [{ "src": "/next.svg", "sizes": "any" }]
+    },
+    {
+      "name": "후원금 관리",
+      "short_name": "후원금",
+      "description": "후원금 등록 및 관리",
+      "url": "/donations",
+      "icons": [{ "src": "/next.svg", "sizes": "any" }]
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}

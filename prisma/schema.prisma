@@ -1,0 +1,410 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────────────────────
+
+enum MemberType {
+  REGULAR   // 정회원 (19세 이상)
+  ASSOCIATE // 준회원 (19세 이상)
+  YOUTH     // 청소년회원 (13~18세)
+  DONOR     // 후원회원 (나이 제한 없음, 회비 면제)
+}
+
+enum FeeType {
+  MONTHLY  // 월납
+  ANNUAL   // 연납
+  LIFETIME // 평생
+}
+
+enum FeeStatus {
+  PAID   // 납부완료
+  UNPAID // 미납
+  EXEMPT // 면제
+}
+
+enum PaymentMethod {
+  CMS             // CMS 자동계좌이체
+  DIRECT_TRANSFER // 직접입금
+  CARD            // 신용카드/체크카드
+  KAKAO_PAY       // 카카오페이
+  NAVER_PAY       // 네이버페이
+  TOSS_PAY        // 토스페이
+  PHONE           // 휴대폰 결제
+  BILLING         // 빌링키 정기결제
+}
+
+enum PaymentStatus {
+  PENDING   // 결제 대기
+  APPROVED  // 승인 완료
+  FAILED    // 결제 실패
+  CANCELED  // 취소됨
+  REFUNDED  // 환불됨
+}
+
+enum Gender {
+  MALE   // 남
+  FEMALE // 여
+}
+
+enum DonorType {
+  MEMBER     // 회원
+  INDIVIDUAL // 개인
+  CORPORATE  // 법인
+}
+
+enum DonationPurpose {
+  GENERAL     // 일반기금
+  SCHOLARSHIP // 장학금
+  OPERATION   // 운영비
+  WELFARE     // 복지사업
+  PROGRAM     // 프로그램
+}
+
+enum MarketingChannel {
+  SMS   // 문자
+  EMAIL // 이메일
+  BOTH  // 문자+이메일
+}
+
+enum DocumentType {
+  REGISTRATION_FORM    // 회원등록신청서
+  GOOGLE_FORM_RESPONSE // Google Forms 응답
+  WEBSITE_SUBMISSION   // 홈페이지 신청서
+  PAPER_FORM          // 서면 신청서
+  CONSENT_FORM        // 동의서
+  ID_COPY             // 신분증 사본
+  OTHER               // 기타
+}
+
+enum VerificationMethod {
+  PHONE        // 휴대폰 본인인증
+  KAKAO        // 카카오 간편인증
+  NAVER        // 네이버 간편인증
+  PASS         // PASS 인증
+  EMAIL_OTP    // 이메일 OTP
+  SMS_OTP      // SMS OTP
+  SOCIAL_LOGIN // 소셜 로그인
+}
+
+enum VerificationStatus {
+  PENDING   // 대기중
+  COMPLETED // 완료
+  VERIFIED  // 인증됨
+  FAILED    // 실패
+  EXPIRED   // 만료
+}
+
+// ─────────────────────────────────────────────────────────────
+// Models
+// ─────────────────────────────────────────────────────────────
+
+model Member {
+  id                 Int               @id @default(autoincrement())
+  name               String
+  birthDate          DateTime
+  gender             Gender
+  address            String
+  phone              String
+  smsConsent         Boolean
+  email              String            @unique
+  memberType         MemberType
+  church             String?
+  position           String?
+  joinDate           DateTime
+  feeType            FeeType
+  paymentMethod      PaymentMethod
+  isActive           Boolean           @default(true)
+  consentPrivacy     Boolean
+  consentMarketing   Boolean
+  marketingChannel   MarketingChannel?
+  consentThirdParty  Boolean
+  consentDate        DateTime
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  // 인증 필드
+  passwordHash       String?                   // 비밀번호 해시 (기존 회원은 null)
+  lastLoginAt        DateTime?                 // 마지막 로그인
+  failedLoginCount   Int               @default(0) // 로그인 실패 횟수
+  lockedUntil        DateTime?                 // 계정 잠금 시간
+
+  // 본인인증 필드
+  isVerified         Boolean           @default(false) // 본인인증 완료 여부
+  verifiedAt         DateTime?                 // 본인인증 완료일
+  verificationCi     String?                   // 본인인증 CI (중복가입 방지용)
+
+  // Relations
+  fees                  MemberFee[]
+  cmsInfo               CmsInfo?
+  donations             Donation[]
+  documents             MemberDocument[]
+  payments              Payment[]
+  billingKey            BillingKey?
+  identityVerifications IdentityVerification[]
+
+  @@index([memberType])
+  @@index([isActive])
+  @@index([joinDate])
+}
+
+model MemberFee {
+  id            Int            @id @default(autoincrement())
+  memberId      Int
+  year          Int
+  month         Int?
+  feeType       FeeType
+  amount        Int
+  status        FeeStatus      @default(UNPAID)
+  paymentMethod PaymentMethod?
+  paidDate      DateTime?
+  createdAt     DateTime       @default(now())
+
+  // Relations
+  member          Member           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  payments        Payment[]
+  billingPayments BillingPayment[]
+
+  @@unique([memberId, year, month])
+  @@index([year, month])
+  @@index([status])
+}
+
+model CmsInfo {
+  id              Int      @id @default(autoincrement())
+  memberId        Int      @unique
+  bankName        String
+  accountNo       String   // MVP: 마스킹 저장 [ENCRYPTED]
+  accountHolder   String
+  holderBirthNo   String   // MVP: 마스킹 저장 [ENCRYPTED]
+  holderPhone     String
+  scheduledAmount Int
+  withdrawDay     Int
+  isActive        Boolean  @default(true)
+  registeredAt    DateTime @default(now())
+
+  // Relations
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+}
+
+model Donation {
+  id        Int             @id @default(autoincrement())
+  receiptNo String          @unique
+  donorName String
+  donorType DonorType
+  amount    Int
+  date      DateTime
+  purpose   DonationPurpose
+  note      String?
+  memberId  Int?
+  createdAt DateTime        @default(now())
+
+  // Relations
+  member   Member?   @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  payments Payment[]
+
+  @@index([date])
+  @@index([donorType])
+  @@index([purpose])
+}
+
+model MemberDocument {
+  id           Int          @id @default(autoincrement())
+  memberId     Int
+  documentType DocumentType
+  originalName String       // 원본 파일명
+  fileName     String       // 저장된 파일명
+  filePath     String       // 파일 경로
+  fileSize     Int          // 파일 크기 (bytes)
+  mimeType     String       // MIME 타입 (application/pdf, image/jpeg 등)
+  description  String?      // 파일 설명
+  uploadedAt   DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  // Relations
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
+  @@index([documentType])
+  @@index([uploadedAt])
+}
+
+model AccessLog {
+  id          Int      @id @default(autoincrement())
+  action      String   // 수행된 작업 (MEMBER_VIEW, MEMBER_EDIT, DOCUMENT_DOWNLOAD 등)
+  resource    String?  // 접근한 리소스 (member_id, document_id 등)
+  userId      String?  // 사용자 식별자 (MVP에서는 IP 주소)
+  userAgent   String?  // 브라우저 정보
+  ipAddress   String   // IP 주소
+  timestamp   DateTime @default(now())
+  successful  Boolean  @default(true) // 접근 성공 여부
+  details     Json?    // 추가 정보 (JSON)
+
+  @@index([action])
+  @@index([timestamp])
+  @@index([ipAddress])
+}
+
+model DeviceSession {
+  id           String    @id @default(cuid())
+  deviceId     String    @unique // 브라우저 fingerprint 또는 고유 식별자
+  deviceName   String?   // 사용자가 지정한 디바이스 이름
+  userAgent    String    // 브라우저 정보
+  ipAddress    String    // IP 주소
+  location     String?   // 추정 위치 (옵션)
+  isTrusted    Boolean   @default(false) // 신뢰할 수 있는 디바이스 여부
+  isActive     Boolean   @default(true)  // 세션 활성화 상태
+  lastAccessAt DateTime  @default(now()) // 마지막 접근 시간
+  createdAt    DateTime  @default(now()) // 최초 등록 시간
+  expiresAt    DateTime? // 세션 만료 시간 (옵션)
+
+  @@index([ipAddress])
+  @@index([isActive])
+  @@index([lastAccessAt])
+}
+
+// ─────────────────────────────────────────────────────────────
+// 토스페이먼츠 결제 관련 모델
+// ─────────────────────────────────────────────────────────────
+
+model Payment {
+  id              Int           @id @default(autoincrement())
+  paymentKey      String        @unique // 토스페이먼츠 결제 키
+  orderId         String        @unique // 주문 ID
+  memberId        Int
+  amount          Int                   // 결제 금액
+  method          PaymentMethod         // 결제 수단
+  status          PaymentStatus @default(PENDING)
+  approvedAt      DateTime?             // 승인 일시
+  failureReason   String?               // 실패 사유
+  receiptUrl      String?               // 영수증 URL
+
+  // 카드 정보 (카드 결제 시)
+  cardCompany     String?               // 카드사
+  cardNumber      String?               // 마스킹된 카드번호 (****-****-****-1234)
+  cardType        String?               // 신용/체크
+  installmentPlan Int?                  // 할부 개월
+
+  // 연관 데이터
+  memberFeeId     Int?                  // 회비 납부인 경우
+  donationId      Int?                  // 후원금인 경우
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  member          Member        @relation(fields: [memberId], references: [id])
+  memberFee       MemberFee?    @relation(fields: [memberFeeId], references: [id])
+  donation        Donation?     @relation(fields: [donationId], references: [id])
+
+  @@index([memberId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model BillingKey {
+  id              Int              @id @default(autoincrement())
+  memberId        Int              @unique
+  billingKey      String                   // 암호화 저장
+  customerKey     String           @unique // 고객 고유 키 (UUID)
+  cardCompany     String                   // 카드사
+  cardNumber      String                   // 마스킹된 카드번호
+  cardType        String                   // 신용/체크
+  isActive        Boolean          @default(true)
+  authenticatedAt DateTime                 // 인증 일시
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  member          Member           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  billingPayments BillingPayment[]
+
+  @@index([isActive])
+}
+
+model BillingPayment {
+  id              Int           @id @default(autoincrement())
+  billingKeyId    Int
+  paymentKey      String        @unique // 토스페이먼츠 결제 키
+  orderId         String        @unique
+  amount          Int
+  status          PaymentStatus @default(PENDING)
+  scheduledDate   DateTime              // 예정 결제일
+  executedAt      DateTime?             // 실제 실행 일시
+  failureReason   String?
+  retryCount      Int           @default(0)
+  memberFeeId     Int?
+
+  createdAt       DateTime      @default(now())
+
+  // Relations
+  billingKey      BillingKey    @relation(fields: [billingKeyId], references: [id])
+  memberFee       MemberFee?    @relation(fields: [memberFeeId], references: [id])
+
+  @@index([scheduledDate])
+  @@index([status])
+}
+
+model PaymentWebhookLog {
+  id            Int      @id @default(autoincrement())
+  eventType     String           // 이벤트 타입
+  paymentKey    String?
+  orderId       String?
+  payload       Json             // 원본 웹훅 데이터
+  processedAt   DateTime @default(now())
+  isProcessed   Boolean  @default(false)
+  errorMessage  String?
+
+  @@index([paymentKey])
+  @@index([processedAt])
+}
+
+// ─────────────────────────────────────────────────────────────
+// 본인인증 관련 모델
+// ─────────────────────────────────────────────────────────────
+
+model IdentityVerification {
+  id              Int                 @id @default(autoincrement())
+  requestId       String              @unique // 인증 요청 ID
+  memberId        Int?                // 연결된 회원 (가입 전이면 null)
+  method          VerificationMethod  // 인증 방식
+  status          VerificationStatus  @default(PENDING)
+
+  // 인증 정보
+  name            String?             // 인증된 이름
+  birthDate       DateTime?           // 인증된 생년월일
+  gender          Gender?             // 인증된 성별
+  phone           String?             // 인증된 휴대폰번호
+  ci              String?             // 연계정보 (CI)
+  di              String?             // 중복가입확인정보 (DI)
+
+  // OTP 관련
+  otpCode         String?             // OTP 코드 (해시 저장)
+  otpSentAt       DateTime?           // OTP 발송 시간
+  otpAttempts     Int                 @default(0) // OTP 시도 횟수
+
+  // 간편인증 관련
+  providerId      String?             // 간편인증 제공자 ID
+  providerEmail   String?             // 간편인증 이메일
+  redirectUrl     String?             // 리다이렉트 URL
+
+  // 시간 정보
+  expiresAt       DateTime            // 인증 만료 시간
+  completedAt     DateTime?           // 인증 완료 시간
+  createdAt       DateTime            @default(now())
+
+  // Relations
+  member          Member?             @relation(fields: [memberId], references: [id], onDelete: SetNull)
+
+  @@index([requestId])
+  @@index([ci])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([createdAt])
+}

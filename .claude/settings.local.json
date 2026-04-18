@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp status)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp diff)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp log --oneline -5)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp add render.yaml .claude/)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp commit -m \"$\\(cat <<''EOF''\nchore: add Render deployment configuration\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(npx prisma migrate:*)",
+      "Bash(npx prisma db seed)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npx dotenv:*)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp diff --stat)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp log --oneline -3)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp add prisma/schema.prisma prisma/seed.ts prisma/migrations/ prisma.config.ts src/lib/prisma.ts src/lib/utils.ts package.json package-lock.json .claude/settings.local.json)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp commit -m \"$\\(cat <<''EOF''\nfeat: add Prisma schema, seed data, and utilities\n\n- Define 8 enums and 4 models \\(Member, MemberFee, CmsInfo, Donation\\)\n- Add seed script with 6 members, 27 fees, 5 donations\n- Create Prisma singleton with pg adapter for Prisma 7.x\n- Add utility functions: formatAmount, formatDate, calcAge\n- Configure prisma.config.ts for .env.local and seed command\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(chmod:*)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp add scripts/ralph/ PRD.md .claude/settings.local.json)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp commit -m \"$\\(cat <<''EOF''\nfeat: add Ralph Loop automation system\n\n- Add ralph.sh script for automated task implementation\n- Add CLAUDE.md AI developer instructions\n- Add README.md usage guide\n- Update PRD.md with 38 implementation tasks \\(6 phases\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(./scripts/ralph/ralph.sh:*)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp diff HEAD~1 --stat)",
+      "Bash(tail:*)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp log --oneline)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp add PRD.md progress.txt ralph_log_20260316_015112.txt)",
+      "Bash(git -C /Users/wandosea/Documents/GitHub/su-member-service-mvp commit -m \"$\\(cat <<''EOF''\ndocs: add Phase 2+ business analysis and system requirements\n\n- Add expanded feature analysis: donation, fees, training, ministry, subscription\n- Add system requirements: multi-device, PDF storage, privacy compliance\n- Add 4-level permission hierarchy \\(member, regional, leadership, admin\\)\n- Add device access policy requirements\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(bash scripts/ralph/ralph.sh:*)",
+      "Bash(ls:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npx tsc:*)",
+      "WebSearch",
+      "Bash(npm run test:*)",
+      "Bash(npm run test:e2e:*)",
+      "Bash(npx playwright install)"
+    ]
+  }
+}
