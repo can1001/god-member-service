@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 import { FileText, Download, Search, Filter } from 'lucide-react'
-import { Prisma, DocumentType } from '@prisma/client'
+import type { DocumentType } from '@prisma/client'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,8 +15,18 @@ const documentTypeLabels: Record<string, string> = {
   OTHER: '기타',
 }
 
+type MemberDocumentWhereInput = {
+  documentType?: DocumentType
+  member?: {
+    OR?: Array<{
+      name?: { contains: string; mode: 'insensitive' }
+      email?: { contains: string; mode: 'insensitive' }
+    }>
+  }
+}
+
 async function getDocuments(searchQuery?: string, documentType?: string) {
-  const where: Prisma.MemberDocumentWhereInput = {}
+  const where: MemberDocumentWhereInput = {}
 
   if (searchQuery) {
     where.member = {
