@@ -13,7 +13,8 @@ export default defineConfig({
     seed: 'npx dotenv -e .env.local -- tsx prisma/seed.ts',
   },
   datasource: {
-    url: process.env['DATABASE_URL'],
-    // directUrl is handled by schema.prisma
+    // Use DIRECT_URL for CLI operations (migrations, db push)
+    // Runtime Prisma Client uses DATABASE_URL from environment
+    url: process.env['DIRECT_URL'] || process.env['DATABASE_URL'],
   },
 })
