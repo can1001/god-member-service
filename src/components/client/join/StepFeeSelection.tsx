@@ -87,15 +87,15 @@ export function StepFeeSelection({ formData, updateFormData }: StepFeeSelectionP
         <div className="space-y-1 text-sm">
           <p>
             <span className="text-gray-500">은행:</span>{' '}
-            <span className="font-medium">[은행명]</span>
+            <span className="font-medium">카카오뱅크</span>
           </p>
           <p>
             <span className="text-gray-500">계좌번호:</span>{' '}
-            <span className="font-medium">[계좌번호]</span>
+            <span className="font-medium">7942-25-97234</span>
           </p>
           <p>
             <span className="text-gray-500">예금주:</span>{' '}
-            <span className="font-medium">하나님나라연구소</span>
+            <span className="font-medium">박기형</span>
           </p>
         </div>
         <p className="text-xs text-gray-500 pt-2 border-t border-gray-200">

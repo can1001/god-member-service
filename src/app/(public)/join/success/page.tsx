@@ -119,15 +119,15 @@ export default async function JoinSuccessPage({ searchParams }: PageProps) {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-600">은행</span>
-              <span className="font-medium">[은행명]</span>
+              <span className="font-medium">카카오뱅크</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">계좌번호</span>
-              <span className="font-medium">[계좌번호]</span>
+              <span className="font-medium">7942-25-97234</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">예금주</span>
-              <span className="font-medium">하나님나라연구소</span>
+              <span className="font-medium">박기형</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">납부 금액</span>

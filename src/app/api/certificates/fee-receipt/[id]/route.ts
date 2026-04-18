@@ -267,10 +267,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
             <div class="organization">
                 <div class="org-name">하나님나라연구소</div>
-                <div class="org-info">Kingdom of God Research Institute</div>
-                <div class="org-info">[주소]</div>
-                <div class="org-info">[연락처]</div>
-                <div class="org-info">[홈페이지]</div>
+                <div class="org-info">The Institute of God's Reign</div>
+                <div class="org-info">서울특별시 동작구 사당로 8, 3층 (진흥인쇄랜드 건물)</div>
+                <div class="org-info">전화: 010-8981-0081 | 이메일: dsplandp@naver.com</div>
             </div>
 
             <div class="footer">

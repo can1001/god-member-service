@@ -25,7 +25,14 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: '하나님나라연구소 - 회원관리시스템',
   description: '하나님나라연구소 회원·회비·후원금 통합 관리 시스템',
-  keywords: ['하나님나라연구소', '회원관리', '회비관리', '후원금관리'],
+  keywords: [
+    '하나님나라연구소',
+    '하나연',
+    "The Institute of God's Reign",
+    '회원관리',
+    '회비관리',
+    '후원금관리',
+  ],
   authors: [{ name: '하나님나라연구소' }],
   creator: '하나님나라연구소',
   publisher: '하나님나라연구소',
