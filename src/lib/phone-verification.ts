@@ -7,7 +7,7 @@
 
 export interface PhoneAuthRequest {
   requestId: string
-  phone: string
+  phone?: string // Optional - can be collected on auth page
   returnUrl?: string
 }
 
@@ -100,9 +100,12 @@ export class KGInisysPhoneAuth {
     const params = new URLSearchParams({
       service: 'kginisys',
       requestId: request.requestId,
-      phone: request.phone,
       returnUrl: request.returnUrl || '/join',
     })
+    // phone is optional - will be collected on mock page if not provided
+    if (request.phone) {
+      params.set('phone', request.phone)
+    }
 
     return {
       success: true,
@@ -166,9 +169,12 @@ export class DanalPhoneAuth {
     const params = new URLSearchParams({
       service: 'danal',
       requestId: request.requestId,
-      phone: request.phone,
       returnUrl: request.returnUrl || '/join',
     })
+    // phone is optional - will be collected on mock page if not provided
+    if (request.phone) {
+      params.set('phone', request.phone)
+    }
 
     return {
       success: true,

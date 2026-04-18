@@ -12,27 +12,23 @@ import { phoneAuthService } from '@/lib/phone-verification'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { phone, returnUrl } = body
+    const { phone, returnUrl, provider } = body
 
-    // 입력값 검증
-    if (!phone) {
-      return NextResponse.json(
-        { success: false, error: '휴대폰 번호를 입력해주세요.' },
-        { status: 400 }
-      )
+    // 휴대폰 번호는 선택적 - 없으면 인증 페이지에서 수집
+    let normalizedPhone = ''
+
+    if (phone) {
+      // 휴대폰 번호 형식 검증 (010-XXXX-XXXX 또는 01012345678)
+      const phonePattern = /^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$/
+      if (!phonePattern.test(phone.replace(/\s/g, ''))) {
+        return NextResponse.json(
+          { success: false, error: '올바른 휴대폰 번호 형식이 아닙니다.' },
+          { status: 400 }
+        )
+      }
+      // 정규화된 휴대폰 번호
+      normalizedPhone = phone.replace(/[-\s]/g, '')
     }
-
-    // 휴대폰 번호 형식 검증 (010-XXXX-XXXX 또는 01012345678)
-    const phonePattern = /^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$/
-    if (!phonePattern.test(phone.replace(/\s/g, ''))) {
-      return NextResponse.json(
-        { success: false, error: '올바른 휴대폰 번호 형식이 아닙니다.' },
-        { status: 400 }
-      )
-    }
-
-    // 정규화된 휴대폰 번호
-    const normalizedPhone = phone.replace(/[-\s]/g, '')
 
     // 요청 ID 생성
     const requestId = `phone-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
@@ -70,11 +66,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: {
-        requestId: verification.requestId,
-        authUrl: authResult.authUrl,
-        expiresAt: verification.expiresAt,
-      },
+      requestId: verification.requestId,
+      authUrl: authResult.authUrl,
+      expiresAt: verification.expiresAt,
     })
   } catch (error) {
     console.error('휴대폰 본인인증 시작 중 오류:', error)

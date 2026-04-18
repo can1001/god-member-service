@@ -99,14 +99,13 @@ export function StepVerification({
 
         authUrl = result.authUrl
       }
-      // 간편인증
+      // 간편인증 (Kakao, Naver, PASS)
       else {
-        const response = await fetch(`/api/auth/${method.toLowerCase()}/start`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            returnUrl: '/join?step=verification',
-          }),
+        const params = new URLSearchParams({
+          returnUrl: '/join?step=verification',
+        })
+        const response = await fetch(`/api/auth/${method.toLowerCase()}/start?${params}`, {
+          method: 'GET',
         })
 
         const result = await response.json()

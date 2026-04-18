@@ -17,7 +17,7 @@ function MockPhoneAuthContent() {
   const [error, setError] = useState('')
 
   const requestId = searchParams.get('requestId')
-  const phone = searchParams.get('phone')
+  const initialPhone = searchParams.get('phone') || ''
   const returnUrl = searchParams.get('returnUrl') || '/join'
   const service = searchParams.get('service') || 'kginisys'
 
@@ -26,13 +26,14 @@ function MockPhoneAuthContent() {
     name: '김철수',
     birthDate: '1990-01-15',
     gender: 'M',
+    phone: initialPhone,
   })
 
   useEffect(() => {
-    if (!requestId || !phone) {
+    if (!requestId) {
       setError('잘못된 접근입니다.')
     }
-  }, [requestId, phone])
+  }, [requestId])
 
   const handleSubmit = async (success: boolean) => {
     if (!requestId) return
@@ -52,7 +53,7 @@ function MockPhoneAuthContent() {
           resultCode: success ? '0000' : '9999',
           resultMessage: success ? '본인인증 성공' : '본인인증 실패',
           name: success ? formData.name : undefined,
-          phone: success ? phone : undefined,
+          phone: success ? formData.phone : undefined,
           birthDate: success ? formData.birthDate : undefined,
           gender: success ? formData.gender : undefined,
           ci: success ? `CI_${Math.random().toString(36).substr(2, 9)}` : undefined,
@@ -110,8 +111,16 @@ function MockPhoneAuthContent() {
           {error && <div className="text-sm text-red-500 bg-red-50 p-3 rounded">{error}</div>}
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium">인증할 휴대폰 번호</Label>
-            <Input value={phone || ''} disabled />
+            <Label htmlFor="phone" className="text-sm font-medium">
+              인증할 휴대폰 번호
+            </Label>
+            <Input
+              id="phone"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              placeholder="010-1234-5678"
+              disabled={!!initialPhone}
+            />
           </div>
 
           <div className="space-y-2">
@@ -151,7 +160,7 @@ function MockPhoneAuthContent() {
             <Button
               className="w-full"
               onClick={() => handleSubmit(true)}
-              disabled={loading || !formData.name}
+              disabled={loading || !formData.name || !formData.phone}
             >
               {loading ? '처리 중...' : '본인인증 완료'}
             </Button>
