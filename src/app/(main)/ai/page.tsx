@@ -20,7 +20,7 @@ export default function AiPage() {
             </div>
           </div>
           <p className="text-sm text-gray-600">
-            성서유니온선교회 회원·회비·후원금 관리에 대해 실시간 데이터를 바탕으로 도움을 드립니다.
+            하나님나라연구소 회원·회비·후원금 관리에 대해 실시간 데이터를 바탕으로 도움을 드립니다.
           </p>
         </div>
 

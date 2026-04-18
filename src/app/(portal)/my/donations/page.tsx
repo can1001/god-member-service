@@ -11,7 +11,7 @@ import { ArrowLeft, FileText } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: '후원 내역 - 성서유니온선교회',
+  title: '후원 내역 - 하나님나라연구소',
   description: '회원 후원 내역',
 }
 

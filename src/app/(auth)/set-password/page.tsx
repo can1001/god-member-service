@@ -4,7 +4,7 @@ import { SetPasswordForm } from '@/components/client/SetPasswordForm'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const metadata = {
-  title: '비밀번호 설정 - 성서유니온선교회',
+  title: '비밀번호 설정 - 하나님나라연구소',
   description: '회원 비밀번호 설정 페이지',
 }
 

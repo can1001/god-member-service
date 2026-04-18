@@ -85,7 +85,7 @@ node scripts/generate-qr.js "https://your-domain.com/join"
 
 - 은행: 국민은행
 - 계좌번호: 483901-01-188268
-- 예금주: 성서유니온선교회
+- 예금주: 하나님나라연구소
 
 ### 5단계: 동의 및 확인
 

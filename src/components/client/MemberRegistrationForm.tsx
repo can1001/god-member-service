@@ -729,7 +729,7 @@ export function MemberRegistrationForm() {
           <div className="text-sm text-blue-800">
             <p>은행: 국민은행</p>
             <p>계좌: 483901-01-188268</p>
-            <p>예금주: 성서유니온선교회</p>
+            <p>예금주: 하나님나라연구소</p>
           </div>
         </div>
       )}

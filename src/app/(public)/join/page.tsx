@@ -1,8 +1,8 @@
 import { JoinWizard } from '@/components/client/join/JoinWizard'
 
 export const metadata = {
-  title: '회원가입 | 한국성서유니온선교회',
-  description: '한국성서유니온선교회 회원가입 페이지',
+  title: '회원가입 | 하나님나라연구소',
+  description: '하나님나라연구소 회원가입 페이지',
 }
 
 export default function JoinPage() {

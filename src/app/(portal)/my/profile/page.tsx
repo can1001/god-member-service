@@ -10,7 +10,7 @@ import { ArrowLeft, User, Mail, Phone, MapPin, Calendar, CreditCard, Building } 
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: '내 정보 - 성서유니온선교회',
+  title: '내 정보 - 하나님나라연구소',
   description: '회원 정보 확인',
 }
 

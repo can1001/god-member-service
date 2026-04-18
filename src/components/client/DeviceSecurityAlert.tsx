@@ -159,7 +159,7 @@ export default function DeviceSecurityAlert() {
           <Alert>
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
-              새로운 기기에서 성서유니온선교회 관리 시스템에 접속했습니다.
+              새로운 기기에서 하나님나라연구소 관리 시스템에 접속했습니다.
             </AlertDescription>
           </Alert>
 

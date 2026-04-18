@@ -126,7 +126,7 @@ export async function generateAiContext(): Promise<string> {
 
     // 컨텍스트 텍스트 생성
     const context = `
-## 성서유니온선교회 현황 (${currentYear}년 ${currentMonth}월 기준)
+## 하나님나라연구소 현황 (${currentYear}년 ${currentMonth}월 기준)
 
 ### 회원 현황
 - 총 활성 회원수: ${totalMembers}명

@@ -11,7 +11,7 @@ import { CreditCard, ArrowLeft } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: '회비 내역 - 성서유니온선교회',
+  title: '회비 내역 - 하나님나라연구소',
   description: '회원 회비 납부 내역',
 }
 

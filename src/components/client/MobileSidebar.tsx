@@ -98,7 +98,7 @@ export function MobileSidebar({ isOpen, setIsOpen }: MobileSidebarProps) {
       >
         {/* 헤더 */}
         <div className="flex h-16 items-center justify-between px-6">
-          <h1 className="text-xl font-bold text-white">성서유니온선교회</h1>
+          <h1 className="text-xl font-bold text-white">하나님나라연구소</h1>
           <button
             onClick={() => setIsOpen(false)}
             className="rounded-md p-2 text-gray-300 hover:bg-gray-700 hover:text-white"
