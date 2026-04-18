@@ -1,6 +1,7 @@
 import pg from 'pg'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const connectionString = process.env.DATABASE_URL
 if (!connectionString) {
@@ -199,6 +200,32 @@ async function main() {
   })
 
   // ─────────────────────────────────────────────────────────────
+  // 테스트 계정 (로그인 테스트용)
+  // ─────────────────────────────────────────────────────────────
+  const passwordHash = await bcrypt.hash('11111111', 12)
+  const testMember = await prisma.member.create({
+    data: {
+      name: '테스트 회원',
+      email: 'test@god.or.kr',
+      passwordHash,
+      birthDate: new Date('1990-01-01'),
+      gender: 'MALE',
+      address: '서울시 테스트구',
+      phone: '010-0000-0000',
+      smsConsent: true,
+      memberType: 'REGULAR',
+      feeType: 'MONTHLY',
+      paymentMethod: 'DIRECT_TRANSFER',
+      joinDate: new Date(),
+      consentPrivacy: true,
+      consentMarketing: false,
+      consentThirdParty: false,
+      consentDate: new Date(),
+      isActive: true,
+    },
+  })
+
+  // ─────────────────────────────────────────────────────────────
   // 회비 레코드 생성
   // ─────────────────────────────────────────────────────────────
 
@@ -346,7 +373,8 @@ async function main() {
   ])
 
   console.log('Seed completed successfully!')
-  console.log(`- Members: 6 (Regular: 3, Associate: 2, Youth: 1)`)
+  console.log(`- Members: 7 (Regular: 3, Associate: 2, Youth: 1, Test: 1)`)
+  console.log(`- Test account: test@god.or.kr / 11111111`)
   console.log(`- MemberFees: ${await prisma.memberFee.count()}`)
   console.log(`- CmsInfo: ${await prisma.cmsInfo.count()}`)
   console.log(`- Donations: ${await prisma.donation.count()}`)
