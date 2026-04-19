@@ -64,14 +64,36 @@ function MockPhoneAuthContent() {
       const result = await response.json()
 
       if (result.success) {
-        // 성공 시 원래 페이지로 돌아가기
+        // 팝업에서 열린 경우 postMessage로 결과 전달
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              type: 'VERIFICATION_SUCCESS',
+              data: {
+                name: formData.name,
+                birthDate: formData.birthDate,
+                gender: formData.gender,
+                phone: formData.phone,
+                ci: result.data.verifiedInfo?.ci,
+                di: result.data.verifiedInfo?.di,
+                isExistingMember: result.data.isExistingMember,
+              },
+            },
+            window.location.origin
+          )
+          window.close()
+          return
+        }
+
+        // 팝업이 아닌 경우 리다이렉트 (URL 파라미터 올바르게 병합)
         const params = new URLSearchParams({
           verified: 'true',
           requestId,
           ...(result.data.isExistingMember ? { existing: 'true' } : {}),
         })
 
-        window.location.href = `${returnUrl}?${params.toString()}`
+        const separator = returnUrl.includes('?') ? '&' : '?'
+        window.location.href = `${returnUrl}${separator}${params.toString()}`
       } else {
         setError(result.error || '본인인증 처리 중 오류가 발생했습니다.')
       }
