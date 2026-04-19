@@ -199,9 +199,12 @@ export default function AboutPage() {
               <div className="w-12 h-12 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center mb-4 group-hover:bg-violet-600 group-hover:text-white transition-colors">
                 <Users className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">문화/사회와 소통</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                문학과 사회과학, 자연과학의 다양한 언어로 세상과 소통
+              </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                문화, 사회, 과학 분야와 대화하며 하나님 나라의 가치를 세상과 나눕니다.
+                문학, 사회과학, 자연과학의 다양한 언어로 세상과 소통하며, 하나님 나리의 통치를 널리
+                알리고자 합니다.
               </p>
             </div>
 
