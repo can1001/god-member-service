@@ -135,7 +135,7 @@ export default function AboutPage() {
               </div>
 
               <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">김희권 박사</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">김회권 박사</h3>
                 <p className="text-blue-600 font-medium mb-6">
                   Ph.D., Princeton Theological Seminary
                 </p>
