@@ -48,11 +48,15 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // 요청 origin 추출 (프로덕션에서 올바른 URL 사용을 위해)
+    const baseUrl = request.nextUrl.origin
+
     // KG이니시스/다날 본인인증 서비스 호출
     const authResult = await phoneAuthService.requestAuth({
       requestId: verification.requestId,
       phone: normalizedPhone,
       returnUrl,
+      baseUrl,
     })
 
     if (!authResult.success) {

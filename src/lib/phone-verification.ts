@@ -9,6 +9,7 @@ export interface PhoneAuthRequest {
   requestId: string
   phone?: string // Optional - can be collected on auth page
   returnUrl?: string
+  baseUrl?: string // Base URL for mock auth (from request origin)
 }
 
 export interface PhoneAuthResponse {
@@ -96,7 +97,7 @@ export class KGInisysPhoneAuth {
    * 모의 KG이니시스 구현 (MVP용)
    */
   private mockKGInisysRequest(request: PhoneAuthRequest): PhoneAuthResponse {
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+    const baseUrl = request.baseUrl || process.env.NEXTAUTH_URL || 'http://localhost:3000'
     const params = new URLSearchParams({
       service: 'kginisys',
       requestId: request.requestId,
@@ -165,7 +166,7 @@ export class DanalPhoneAuth {
    * 모의 다날 구현 (MVP용)
    */
   private mockDanalRequest(request: PhoneAuthRequest): PhoneAuthResponse {
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+    const baseUrl = request.baseUrl || process.env.NEXTAUTH_URL || 'http://localhost:3000'
     const params = new URLSearchParams({
       service: 'danal',
       requestId: request.requestId,
