@@ -1,5 +1,3 @@
-'use server'
-
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 
@@ -27,9 +25,11 @@ export interface SessionPayload {
 }
 
 /**
- * JWT 세션 토큰 생성
+ * JWT 세션 토큰 생성 (Server Action)
  */
 export async function createSession(payload: SessionPayload): Promise<string> {
+  'use server'
+
   const secret = getJwtSecret()
   const expiresAt = new Date(Date.now() + SESSION_EXPIRY_DAYS * 24 * 60 * 60 * 1000)
 
@@ -53,7 +53,7 @@ export async function createSession(payload: SessionPayload): Promise<string> {
 }
 
 /**
- * JWT 토큰 검증
+ * JWT 토큰 검증 (읽기 전용 - Server Action 아님)
  */
 export async function verifySession(token: string): Promise<SessionPayload | null> {
   try {
@@ -72,7 +72,7 @@ export async function verifySession(token: string): Promise<SessionPayload | nul
 }
 
 /**
- * 현재 세션 조회
+ * 현재 세션 조회 (읽기 전용 - Server Action 아님)
  */
 export async function getSession(): Promise<SessionPayload | null> {
   const cookieStore = await cookies()
@@ -86,9 +86,11 @@ export async function getSession(): Promise<SessionPayload | null> {
 }
 
 /**
- * 세션 삭제 (로그아웃)
+ * 세션 삭제 (로그아웃) (Server Action)
  */
 export async function deleteSession(): Promise<void> {
+  'use server'
+
   const cookieStore = await cookies()
   cookieStore.delete(SESSION_COOKIE_NAME)
 }
